@@ -28,6 +28,10 @@ namespace local_plws;
 defined('MOODLE_INTERNAL') || die();
 
 use core_external\external_api;
+use core_external\external_function_parameters;
+use core_external\external_multiple_structure;
+use core_external\external_single_structure;
+use core_external\external_value;
 
 class external extends external_api {
 
@@ -37,8 +41,8 @@ class external extends external_api {
      * @return {object} external_function_parameters
      */
     public static function delete_file_parameters() {
-        return new \external_function_parameters(
-                array('fileid' => new \external_value(PARAM_TEXT, 'File ID'))
+        return new external_function_parameters(
+            array('fileid' => new external_value(PARAM_TEXT, 'File ID'))
         );
     }
 
@@ -74,7 +78,7 @@ class external extends external_api {
      * @return external_value BOOL
      */
     public static function delete_file_returns() {
-        return new \external_value(PARAM_BOOL, 0);
+        return new external_value(PARAM_BOOL, 0);
     }
 
     /**
@@ -82,8 +86,8 @@ class external extends external_api {
      * @return external_function_parameters
      */
     public static function get_userid_by_username_parameters() {
-        return new \external_function_parameters(
-                array('username' => new \external_value(PARAM_TEXT, 'The username'))
+        return new external_function_parameters(
+            array('username' => new external_value(PARAM_TEXT, 'The username'))
         );
     }
 
@@ -114,7 +118,7 @@ class external extends external_api {
      * @return external_description
      */
     public static function get_userid_by_username_returns() {
-        return new \external_value(PARAM_INT, 0);
+        return new external_value(PARAM_INT, 0);
     }
 
     /**
@@ -122,12 +126,12 @@ class external extends external_api {
      * @return external_function_parameters
      */
     public static function role_get_capability_parameters() {
-        return new \external_function_parameters(
-                array(
-            'roleid' => new \external_value(PARAM_INT, 'Role ID'),
-            'capability' => new \external_value(PARAM_TEXT, 'Capability name (e.g. coursereport/log:view)'),
-            'contextid' => new \external_value(PARAM_INT, 'Context ID'),
-                )
+        return new external_function_parameters(
+            array(
+                'roleid' => new external_value(PARAM_INT, 'Role ID'),
+                'capability' => new external_value(PARAM_TEXT, 'Capability name (e.g. coursereport/log:view)'),
+                'contextid' => new external_value(PARAM_INT, 'Context ID'),
+            )
         );
     }
 
@@ -188,11 +192,11 @@ class external extends external_api {
      * @return external_description
      */
     public static function role_get_capability_returns() {
-        return new \external_single_structure(
-                array(
-            'permission' => new \external_value(PARAM_TEXT, 'permission'),
-            'risks' => new \external_multiple_structure(new \external_value(PARAM_TEXT, '')),
-                )
+        return new external_single_structure(
+            array(
+                'permission' => new external_value(PARAM_TEXT, 'permission'),
+                'risks' => new external_multiple_structure(new external_value(PARAM_TEXT, '')),
+            )
         );
     }
 
@@ -201,13 +205,13 @@ class external extends external_api {
      * @return external_function_parameters
      */
     public static function role_set_capability_parameters() {
-        return new \external_function_parameters(
-                array(
-            'roleid' => new \external_value(PARAM_INT, 'Role ID'),
-            'capability' => new \external_value(PARAM_TEXT, 'Capability name (e.g. coursereport/log:view)'),
-            'contextid' => new \external_value(PARAM_INT, 'Context ID'),
-            'permission' => new \external_value(PARAM_TEXT, 'Permission name (not set, allow, prevent or prohibit)'),
-                )
+        return new external_function_parameters(
+            array(
+                'roleid' => new external_value(PARAM_INT, 'Role ID'),
+                'capability' => new external_value(PARAM_TEXT, 'Capability name (e.g. coursereport/log:view)'),
+                'contextid' => new external_value(PARAM_INT, 'Context ID'),
+                'permission' => new external_value(PARAM_TEXT, 'Permission name (not set, allow, prevent or prohibit)'),
+            )
         );
     }
 
@@ -219,10 +223,10 @@ class external extends external_api {
         global $DB, $USER;
 
         $params = self::validate_parameters(self::role_set_capability_parameters(), array('roleid' => $roleid,
-                    'capability' => $capability,
-                    'contextid' => $contextid,
-                    'permission' => $permission));
-                    
+            'capability' => $capability,
+            'contextid' => $contextid,
+            'permission' => $permission));
+
         /*if (!has_capability('moodle/role:override', get_system_context())) {
             throw new \moodle_exception('cannoteditroles');
         } */
@@ -231,8 +235,8 @@ class external extends external_api {
 
         if (!has_capability('moodle/role:override', $context)) {
             throw new \moodle_exception('cannoteditroles');
-        }                           
-        
+        }
+
         $permissiontypes = array(
             'not set' => CAP_INHERIT,
             'inherit' => CAP_INHERIT,
@@ -256,7 +260,7 @@ class external extends external_api {
      * @return external_description
      */
     public static function role_set_capability_returns() {
-        return new \external_value(PARAM_BOOL, 0);
+        return new external_value(PARAM_BOOL, 0);
     }
 
     /**
@@ -264,7 +268,7 @@ class external extends external_api {
      * @return external_function_parameters
      */
     public static function roles_list_parameters() {
-        return new \external_function_parameters(array());
+        return new external_function_parameters(array());
     }
 
     /**
@@ -289,13 +293,13 @@ class external extends external_api {
      * @return external_description
      */
     public static function roles_list_returns() {
-        return new \external_multiple_structure(
-                new \external_single_structure(
+        return new external_multiple_structure(
+            new external_single_structure(
                 array(
-            'id' => new \external_value(PARAM_TEXT, 'Role ID'),
-            'shortname' => new \external_value(PARAM_TEXT, 'Role shortname'),
+                    'id' => new external_value(PARAM_TEXT, 'Role ID'),
+                    'shortname' => new external_value(PARAM_TEXT, 'Role shortname'),
                 )
-                )
+            )
         );
     }
 
@@ -304,11 +308,11 @@ class external extends external_api {
      * @return external_function_parameters
      */
     public static function user_assign_authentication_parameters() {
-        return new \external_function_parameters(
-                array(
-            'userid' => new \external_value(PARAM_INT, 'User ID'),
-            'auth' => new \external_value(PARAM_TEXT, 'Authentication shortname'),
-                )
+        return new external_function_parameters(
+            array(
+                'userid' => new external_value(PARAM_INT, 'User ID'),
+                'auth' => new external_value(PARAM_TEXT, 'Authentication shortname'),
+            )
         );
     }
 
@@ -320,7 +324,7 @@ class external extends external_api {
         global $DB, $USER;
 
         $params = self::validate_parameters(self::user_assign_authentication_parameters(), array('userid' => $userid, 'auth' => $auth));
-       
+
         /*
         if (!has_capability('moodle/user:update', get_system_context())) {
             throw new \moodle_exception('cannoteditroles');
@@ -330,26 +334,26 @@ class external extends external_api {
 
         if (!has_capability('moodle/user:update', $context)) {
             throw new \moodle_exception('cannoteditroles');
-        }           
-               
+        }
+
         if (!$user = $DB->get_record('user', array('id' => $userid))) {
             throw new \moodle_exception('usernotfound');
         }
- 
+
         if (!exists_auth_plugin($auth)) {
             throw new \moodle_exception('authdoesnotexist');
         }
- 
+
         //$toupdate = new stdClass();
-        
+
         $toupdate->id = $userid;
         $toupdate->auth = $auth;
         $toupdate->timemodified = time();
- 
+
         if (!$DB->update_record('user', $toupdate)) {
             return false;
         }
-    
+
         $updateduser = $DB->get_record('user', array('id' => $userid));
 
         return true;
@@ -360,7 +364,7 @@ class external extends external_api {
      * @return external_description
      */
     public static function user_assign_authentication_returns() {
-        return new \external_value(PARAM_BOOL, false);
+        return new external_value(PARAM_BOOL, false);
     }
 
     /**
@@ -368,11 +372,11 @@ class external extends external_api {
      * @return external_function_parameters
      */
     public static function get_role_assignment_parameters() {
-        return new \external_function_parameters(
-                array(
-            'fromrole' => new \external_value(PARAM_INT, 'Role assigning'),
-            'torole' => new \external_value(PARAM_INT, 'Role assigned'),
-                )
+        return new external_function_parameters(
+            array(
+                'fromrole' => new external_value(PARAM_INT, 'Role assigning'),
+                'torole' => new external_value(PARAM_INT, 'Role assigned'),
+            )
         );
     }
 
@@ -394,7 +398,7 @@ class external extends external_api {
 
         if (!has_capability('moodle/role:manage', $context)) {
             throw new \moodle_exception('cannoteditroles');
-        }           
+        }
 
         if (!$DB->get_record('role', array('id' => $fromrole))) {
             throw new \moodle_exception('fromrolenotexists');
@@ -414,7 +418,7 @@ class external extends external_api {
      * @return external_description
      */
     public static function get_role_assignment_returns() {
-        return new \external_value(PARAM_INT, -1);
+        return new external_value(PARAM_INT, -1);
     }
 
     /**
@@ -422,12 +426,12 @@ class external extends external_api {
      * @return external_function_parameters
      */
     public static function set_role_assignment_parameters() {
-        return new \external_function_parameters(
-                array(
-            'fromrole' => new \external_value(PARAM_INT, 'Role assigning'),
-            'torole' => new \external_value(PARAM_INT, 'Role assigned'),
-            'value' => new \external_value(PARAM_INT, 'Value to set (0 or 1)'),
-                )
+        return new external_function_parameters(
+            array(
+                'fromrole' => new external_value(PARAM_INT, 'Role assigning'),
+                'torole' => new external_value(PARAM_INT, 'Role assigned'),
+                'value' => new external_value(PARAM_INT, 'Value to set (0 or 1)'),
+            )
         );
     }
 
@@ -449,7 +453,7 @@ class external extends external_api {
 
         if (!has_capability('moodle/role:manage', $context)) {
             throw new \moodle_exception('cannoteditroles');
-        }           
+        }
 
         if (!$DB->get_record('role', array('id' => $fromrole))) {
             throw new \moodle_exception('fromrolenotexists');
@@ -482,7 +486,7 @@ class external extends external_api {
      * @return external_description
      */
     public static function set_role_assignment_returns() {
-        return new \external_value(PARAM_BOOL, false);
+        return new external_value(PARAM_BOOL, false);
     }
 
     /**
@@ -490,11 +494,11 @@ class external extends external_api {
      * @return external_function_parameters
      */
     public static function get_role_switch_parameters() {
-        return new \external_function_parameters(
-                array(
-            'fromrole' => new \external_value(PARAM_INT, 'Role switching'),
-            'torole' => new \external_value(PARAM_INT, 'Role switched to'),
-                )
+        return new external_function_parameters(
+            array(
+                'fromrole' => new external_value(PARAM_INT, 'Role switching'),
+                'torole' => new external_value(PARAM_INT, 'Role switched to'),
+            )
         );
     }
 
@@ -516,7 +520,7 @@ class external extends external_api {
 
         if (!has_capability('moodle/role:manage', $context)) {
             throw new \moodle_exception('cannoteditroles');
-        }           
+        }
 
         if (!$DB->get_record('role', array('id' => $fromrole))) {
             throw new \moodle_exception('fromrolenotexists');
@@ -536,7 +540,7 @@ class external extends external_api {
      * @return external_description
      */
     public static function get_role_switch_returns() {
-        return new \external_value(PARAM_INT, -1);
+        return new external_value(PARAM_INT, -1);
     }
 
     /**
@@ -544,12 +548,12 @@ class external extends external_api {
      * @return external_function_parameters
      */
     public static function set_role_switch_parameters() {
-        return new \external_function_parameters(
-                array(
-            'fromrole' => new \external_value(PARAM_INT, 'Role switching'),
-            'torole' => new \external_value(PARAM_INT, 'Role switched to'),
-            'value' => new \external_value(PARAM_INT, 'Value to set (0 or 1)'),
-                )
+        return new external_function_parameters(
+            array(
+                'fromrole' => new external_value(PARAM_INT, 'Role switching'),
+                'torole' => new external_value(PARAM_INT, 'Role switched to'),
+                'value' => new external_value(PARAM_INT, 'Value to set (0 or 1)'),
+            )
         );
     }
 
@@ -571,7 +575,7 @@ class external extends external_api {
 
         if (!has_capability('moodle/role:manage', $context)) {
             throw new \moodle_exception('cannoteditroles');
-        }           
+        }
 
         if (!$DB->get_record('role', array('id' => $fromrole))) {
             throw new \moodle_exception('fromrolenotexists');
@@ -604,51 +608,51 @@ class external extends external_api {
      * @return external_description
      */
     public static function set_role_switch_returns() {
-        return new \external_value(PARAM_BOOL, false);
+        return new external_value(PARAM_BOOL, false);
     }
-	
-	/**
-	 * Return the global Role (NEW 10/2020 by p.liersch)	 
+
+    /**
+     * Return the global Role (NEW 10/2020 by p.liersch)
      * @param {integer} contextid, {integer} userid
      * @return {array} roleids
      * @throws {moodle_exception}
-	 */
-	public static function user_get_global_roles($contextid, $userid) {
-		global $DB, $USER;
-		
+     */
+    public static function user_get_global_roles($contextid, $userid) {
+        global $DB, $USER;
+
         if (!$user = $DB->get_record('user', array('id' => $userid))) {
             throw new \moodle_exception('usernotfound');
-        }		
+        }
 
-		$roleids = $DB->get_records('role_assignments', ['contextid' => $contextid, 'userid' => $userid]);
-		
-		return $roleids;
-	}
-	
+        $roleids = $DB->get_records('role_assignments', ['contextid' => $contextid, 'userid' => $userid]);
+
+        return $roleids;
+    }
+
     /**
      * Returns description of method parameters
      * @return external_function_parameters
      */
     public static function user_get_global_roles_parameters() {
-        return new \external_function_parameters(
-                array(
-            'contextid' => new \external_value(PARAM_INT, 'Context ID'),
-            'userid' => new \external_value(PARAM_INT, 'User ID'),
-                )
+        return new external_function_parameters(
+            array(
+                'contextid' => new external_value(PARAM_INT, 'Context ID'),
+                'userid' => new external_value(PARAM_INT, 'User ID'),
+            )
         );
-    }	
-	
+    }
+
     /**
      * Returns description of method result value
      * @return user_get_global_roles
-     */	
+     */
     public static function user_get_global_roles_returns() {
-        return new \external_multiple_structure(
-            new \external_single_structure(
+        return new external_multiple_structure(
+            new external_single_structure(
                 array(
-                    'roleid' => new \external_value(PARAM_INT, 'some roleid id'),
+                    'roleid' => new external_value(PARAM_INT, 'some roleid id'),
                 )
             )
-        );	
-    }	
+        );
+    }
 }
